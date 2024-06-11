@@ -1,0 +1,97 @@
+{{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
+
+<div class="collection-list__wrapper">
+    {% for block in section.blocks %}
+        {% if block.type == "collection" %}
+            {% if forloop.index == 1 %}
+                <div class="collection-list__collection">
+                    <div class="collection-list__info">
+                        <h2 class="collection-list__title h1">{{ section.settings.title }}</h2>
+                        <div class="collection-list__description">{{ section.settings.description }}</div>
+                    </div>
+                    <div class="collection-list__container">
+                        {% render 'collection', block: block %}
+                    </div>
+                </div>
+            {% elsif forloop.last %}
+                <div class="collection-list__collection">
+                    {% render 'collection', block: block %}
+                    <div class="collection-list__collection-button">
+                        {% render 'animated-button', text: section.settings.button, btn-url: section.settings.url %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="collection-list__collection">
+                    {% render 'collection', block: block %}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Section collection list",
+  "tag": "section",
+  "class": "collection-list",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Or choose by categories"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Components of each product are selected in such way that they enhance each other's action, make the skin clean, supple and well-groomed!"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Caption for button",
+      "default": "See all products"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Button url"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Collection",
+      "type": "collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption for collection"
+        },
+        {
+          "type": "color",
+          "id": "caption_color",
+          "label": "Body text"
+        },
+        {
+          "type": "url",
+          "id": "collection_link",
+          "label": "Collection link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section collection list",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

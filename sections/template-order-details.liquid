@@ -1,0 +1,198 @@
+<link rel="stylesheet" href="{{ 'template-order-details.css' | asset_url }}">
+
+{% capture columnsTitle %}
+  {{ section.settings.product }}, {{ section.settings.date }}, {{ section.settings.price }}, {{ section.settings.quantity }}, {{ section.settings.total }}
+{% endcapture %}
+
+{% assign columnsTitleArray = columnsTitle | split: ", " %}
+
+<div class="order-detail__wrapper base-section-limit">
+	<div class="order-detail__header">
+		<h1 class="order-detail__title h1">{{ section.settings.title }} #{{ order.order_number }}</h1>
+		<a class="order-detail__link" href="{{ routes.account_url }}">{{ section.settings.return_button }}</a>
+	</div>
+
+    <div class="order-detail__table">
+        {% if order.line_items.size > 0 %}
+            <div class="order-detail__item desktop">
+                {% for caption in columnsTitleArray %}
+                    <div class="order-detail__table-caption desktop">{{ caption }}</div>
+                {% endfor %}
+            </div>
+            {% for product in order.line_items %}
+                <div class="order-detail__table-item">
+                    <div class="order-detail__table-row">
+                        <div class="order-detail__table-caption mobile">{{ section.settings.product }}</div>
+                        <div class="order-detail__table-data">{{ product.title }}</div>
+                    </div>
+                    <div class="order-detail__table-row">
+                        <div class="order-detail__table-caption mobile">{{ section.settings.date }}</div>
+                        <div class="order-detail__table-data">{{ product.product.created_at | date: "%d %b %Y" }}</div>
+                    </div>
+                    <div class="order-detail__table-row">
+                        <div class="order-detail__table-caption mobile">{{ section.settings.price }}</div>
+                        <div class="order-detail__table-data">{{ product.price | money }}</div>
+                    </div>
+                    <div class="order-detail__table-row">
+                        <div class="order-detail__table-caption mobile">{{ section.settings.quantity }}</div>
+                        <div class="order-detail__table-data">{{ product.quantity }}</div>
+                    </div>
+                    <div class="order-detail__table-row">
+                        <div class="order-detail__table-caption mobile">{{ section.settings.total }}</div>
+                        <div class="order-detail__table-data">{{ product.price | times: product.quantity | money }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="order-detail__billing">
+        <div class="order-detail__detail">
+            <h3 class="order-detail__caption">{{ section.settings.billing }}</h3>
+            <div class="order-detail__payment">
+                <span class="order-detail__payment-text">{{ section.settings.status }}</span>
+                <span class="order-detail__payment-data">{{ order.financial_status }}</span>
+            </div>
+            {% if order.customer.addresses.size > 0 %}
+                <div class="order-detail__address">
+            <span class="order-detail__address-list">
+                {% for address in order.customer.addresses %}
+                    {% if address == customer.default_address %}
+                        {% if address.country %}<span>{{ address.country }}</span>{% endif %}
+                        {% if address.city %}<span>{{ address.city }}</span>{% endif %}
+                        {% if address.address1 %}<span>{{ address.address1 }}</span>{% endif %}
+                        {% if address.address2 %}<span>{{ address.address2 }}</span>{% endif %}
+                        {% if address.phone %}<span>{{ address.phone }}</span>{% endif %}
+                        {% if address.zip %}<span>{{ address.zip }}</span>{% endif %}
+                    {% endif %}
+                {% endfor %}
+            </span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="order-detail__cost">
+            <h3 class="order-detail__caption">{{ section.settings.cost }}</h3>
+            <div class="order-detail__subtotal">
+                <div class="order-detail__subtotal-subtotal">
+                    <span class="order-detail__subtotal-title">{{ section.settings.subtotal }}</span>
+                    <span class="order-detail__subtotal-money">{{ order.subtotal_price | money }}</span>
+                </div>
+                <div class="order-detail__subtotal-shipping">
+                    <span class="order-detail__subtotal-title">{{ section.settings.shipping }} <span>{{ section.settings.shipping_quote }}</span></span>
+                    <span class="order-detail__subtotal-money">{{ order.shipping_price | money }}</span>
+                </div>
+            </div>
+            <div class="order-detail__total-total">
+                <span class="order-detail__total-title">{{ section.settings.total_price }}</span>
+                <span class="order-detail__total-money">{{ order.total_price | money }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "Order detail",
+  "class": "order-detail",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Order title",
+      "default": "Order"
+    },
+    {
+      "type": "text",
+      "id": "return_button",
+      "label": "Return button name",
+      "default": "Return  to account page"
+    },
+    {
+      "type": "header",
+      "content": "Order detail table"
+    },
+    {
+      "type": "text",
+      "id": "product",
+      "label": "Product column",
+      "default": "Product"
+    },
+    {
+      "type": "text",
+      "id": "sku",
+      "label": "Sku column",
+      "default": "Sku"
+    },
+    {
+      "type": "text",
+      "id": "date",
+      "label": "Date column",
+      "default": "Date"
+    },
+    {
+      "type": "text",
+      "id": "price",
+      "label": "Price column",
+      "default": "Price"
+    },
+    {
+      "type": "text",
+      "id": "quantity",
+      "label": "Quantity column",
+      "default": "Quantity"
+    },
+    {
+      "type": "text",
+      "id": "total",
+      "label": "Total column",
+      "default": "Total"
+    },
+    {
+      "type": "header",
+      "content": "Billing block"
+    },
+    {
+      "type": "text",
+      "id": "billing",
+      "label": "Billing",
+      "default": "Billing address"
+    },
+    {
+      "type": "text",
+      "id": "status",
+      "label": "Status",
+      "default": "Payment status:"
+    },
+    {
+      "type": "text",
+      "id": "cost",
+      "label": "Cost",
+      "default": "Cost"
+    },
+    {
+      "type": "text",
+      "id": "subtotal",
+      "label": "Subtotal",
+      "default": "Subtotal:"
+    },
+    {
+      "type": "text",
+      "id": "shipping",
+      "label": "Shipping",
+      "default": "Shipping:"
+    },
+    {
+      "type": "text",
+      "id": "shipping_quote",
+      "label": "Shipping quote",
+      "default": "(Shop location)"
+    },
+    {
+      "type": "text",
+      "id": "total_price",
+      "label": "Total price",
+      "default": "Total:"
+    }
+  ]
+}
+{% endschema %}

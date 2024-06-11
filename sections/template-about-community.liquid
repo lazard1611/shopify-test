@@ -1,0 +1,100 @@
+{{ 'template-about-community.css' | asset_url | stylesheet_tag }}
+
+<div class="about-community__wrapper base-section-limit">
+	<div class="about-community__caption">
+		<h3 class="about-community__title h1">{{ section.settings.title }}</h3>
+		<p class="about-community__description">{{ section.settings.description }}</p>
+	</div>
+	<div class="about-community__content">
+		{% for block in section.blocks %}
+			{% if block.type == "blocks" and block.settings.image != blank %}
+
+			{% assign show_on_mobile = block.settings.show_on_mobile %}
+			{% assign with_text = block.settings.text %}
+
+				<div class="about-community__block{% if show_on_mobile == "no" %} hide{% endif %}">
+					<div class="about-community__image{% if with_text == blank %} full-with{% endif %}">
+						<img src="{{ block.settings.image | image_url }}"
+						     alt="About community"
+						     width="auto"
+						     height="auto"
+						     class="about-community__image-img"
+						     loading="eager"
+						>
+					</div>
+					<p class="about-community__text">{{ block.settings.text }}</p>
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	<div class="about-community__button">
+		{% render 'animated-button', text: section.settings.button, btn-url: section.settings.url %}
+	</div>
+</div>
+
+{% schema %}
+{
+  "name": "Template about community",
+  "class": "about-community",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Building a Community of Fierce Individuals"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Caption for button",
+      "default": "Let's experiment"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Button url"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "blocks",
+      "name": "Blocks",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Gallery image"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "radio",
+          "id": "show_on_mobile",
+          "label": "Show on mobile",
+          "options": [
+            {
+              "value": "yes",
+              "label": "Yes"
+            },
+            {
+              "value": "no",
+              "label": "No"
+            }
+          ],
+          "default": "yes"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+{% assign product_handle = block.settings.product %}
+{% assign product = all_products[product_handle] %}
+
+<div class="review-card__wrapper swiper-slide" id="categories-cards" data-category-review="{{ block.settings.category }}">
+	<div class="review-card__content">
+		<h4 class="review-card__name">&#8212 {{ block.settings.name }}</h4>
+		<p class="review-card__review">{{ block.settings.response }}</p>
+		<div class="review-card__rating">
+			{% for i in (1 .. block.settings.rating) %}
+				<span>{% render 'review-icons', icon: 'star' %}</span>
+			{% endfor %}
+		</div>
+		<div class="review-card__product desktop">
+			<span class="review-card__product-title">{{ product.title }}</span>
+			<span class="review-card__product-price">{{ product.price | money }}</span>
+			<a href="{{ product.url }}" class="review-card__product-link">
+				<span class="review-card__product-caption">{{ block.settings.button_caption }}</span>
+				<span class="review-card__product-arrow">{% render 'general-icons' icon: 'button-arrow' %}</span>
+			</a>
+		</div>
+	</div>
+	<div class="review-card__photo swiper-no-swiping">
+		<label for="image-comparison-range" class="review-card__label">Move image comparison slider</label>
+		<input type="range" min="0" max="100" value="50" class="review-card__range" id="image-comparison-range" data-image-comparison-range="">
+		{% if block.settings.before_image != blank %}
+			<div class="review-card__photo-wrapper overlay" data-image-comparison-overlay="">
+				<div class="review-card__photo-picture overlay">
+					<img src="{{ block.settings.before_image | image_url }}"
+					     alt="{{ product.title }}"
+					     width="auto"
+					     height="auto"
+					     class="review-card__photo-img"
+					     loading="eager"
+					>
+				</div>
+			</div>
+		{% endif %}
+		<div class="review-card__slider" data-image-comparison-slider="">
+	      <span class="review-card__thumb" data-image-comparison-thumb="">
+	        <span class="review-card__thumb-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="10" viewBox="0 0 18 10" fill="currentColor">
+		        <svg class="review-card__thumb-icon--right" xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="none">
+					<path d="M6.5 1L1.5 6L6.5 11" stroke="#484646" stroke-width="2"/>
+				</svg>
+		        <svg class="review-card__thumb-icon--left" xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="none">
+					<path d="M1.5 1L6.5 6L1.5 11" stroke="#484646" stroke-width="2"/>
+				</svg>
+	        </span>
+	      </span>
+		</div>
+		{% if block.settings.after_image != blank %}
+			<div class="review-card__photo-wrapper">
+				<div class="review-card__photo-picture">
+					<img src="{{ block.settings.after_image | image_url }}"
+					     alt="{{ product.title }}"
+					     width="auto"
+					     height="auto"
+					     class="review-card__photo-img"
+					     loading="eager"
+					>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+	<div class="review-card__product mobile">
+		<span class="review-card__product-title">{{ product.title }}</span>
+		<span class="review-card__product-price">{{ product.price | money }}</span>
+		<a href="{{ product.url }}" class="review-card__product-link">
+			<span class="review-card__product-caption">{{ block.settings.button_caption }}</span>
+			<span class="review-card__product-arrow">{% render 'general-icons' icon: 'button-arrow' %}</span>
+		</a>
+	</div>
+</div>

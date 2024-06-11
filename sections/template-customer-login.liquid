@@ -1,0 +1,204 @@
+<link rel="stylesheet" href="{{ 'template-customer-login.css' | asset_url }}">
+
+<div class="template-login__wrapper">
+	<div class="template-login__inner" data-animation-section-block="1">
+		<div class="template-login__box">
+
+			{% comment %}Login form{% endcomment %}
+
+			<div class="template-login__top" id="loginBox">
+				<h1 class="template-login__title h1">{{ section.settings.login_title }}</h1>
+				{% form 'customer_login' %}
+					{% if form.errors %}
+						{% render 'form-error', form: form %}
+					{% endif %}
+					<div class="template-login__form-top">
+						<div class="template-login__form-box">
+							<label for="email-address" class="template-login__form-label">{{ section.settings.email_placeholder }}</label>
+							<input
+								type="email"
+								name="customer[email]"
+								id="email-address"
+								autocomplete="email"
+								class="input"
+								placeholder="{{ section.settings.email_placeholder }}"
+								required
+							>
+						</div>
+
+						<div class="template-login__form-box">
+							<label for="password" class="template-login__form-label">{{ section.settings.password_placeholder }}</label>
+							<input
+								type="password"
+								name="customer[password]"
+								id="password"
+								autocomplete="current-password"
+								class="input"
+								placeholder="{{ section.settings.password_placeholder }}"
+								required
+							>
+						</div>
+						<div class="template-login__form-button">
+							<input type="submit" class="template-login__form-login" value="{{ section.settings.login_button }}">
+						</div>
+					</div>
+				{% endform %}
+
+				<a href="#" class="template-login__btn-forgot" id="forgotButton">{{ section.settings.forgot_button }}</a>
+
+				<div class="template-login__register">
+					<h2 class="template-login__register-title">{{ section.settings.register_caption }}</h2>
+					<a href="{{ routes.account_register_url }}"
+					   class="template-login__register-button">{{ section.settings.register_button }}</a>
+				</div>
+			</div>
+
+			{% comment %}Recovery form{% endcomment %}
+
+			<div class="template-login__top hide recover" id="recoverBox">
+				<h1 class="template-login__title recover__title h1">{{ section.settings.recover_title }}</h1>
+				<div class="template-login__subtitle">{{ section.settings.recover_subtitle }}</div>
+				{% form 'recover_customer_password' %}
+					{% render 'form-error', form: form, class: "template-login__form" %}
+					<div class="template-login__form-top">
+						<div class="template-login__form-box">
+							<label for="email" class="template-login__form-label">{{ section.settings.recover_email_placeholder }}</label>
+							<input
+								type="email"
+								name="email"
+								id="email"
+								autocomplete="email"
+								class="input"
+								placeholder="{{ section.settings.recover_email_placeholder }}"
+								required
+							>
+						</div>
+						<div class="template-login__form-button">
+							<input type="submit" class="template-login__form-login" value="{{ section.settings.recover_submit }}">
+						</div>
+						<a href="#" class="template-login__btn-forgot recover__return" id="recoveryBtn">{{ section.settings.recover_back }}</a>
+					</div>
+				{% endform %}
+			</div>
+
+			<div class="template-login__photo">
+				{% if section.settings.image != blank %}
+					<img
+						src="{{ section.settings.image | image_url }}"
+						alt=""
+						width="auto"
+						height="auto"
+						loading="lazy"
+						class="template-login__photo-img"
+					>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="module" src="{{ 'template-customer-login.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "Login",
+  "class": "template-login",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Login"
+    },
+    {
+      "type": "text",
+      "id": "login_title",
+      "label": "Title",
+      "default": "Log in"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "password_placeholder",
+      "label": "Password placeholder",
+      "default": "Password"
+    },
+    {
+      "type": "text",
+      "id": "forgot_button",
+      "label": "Forgot password",
+      "default": "Forgot your password?"
+    },
+    {
+      "type": "text",
+      "id": "login_button",
+      "label": "Login button",
+      "default": "Log in"
+    },
+    {
+      "type": "text",
+      "id": "register_caption",
+      "label": "Register caption",
+      "default": "Don’t have an account?"
+    },
+    {
+      "type": "text",
+      "id": "register_button",
+      "label": "Register button",
+      "default": "Register"
+    },
+    {
+      "type": "header",
+      "content": "Recover"
+    },
+    {
+      "type": "text",
+      "id": "recover_title",
+      "label": "Title recover",
+      "default": "Password reset"
+    },
+    {
+      "type": "text",
+      "id": "recover_subtitle",
+      "label": "Subtitle recover",
+      "default": "We will send you an email to reset your password"
+    },
+    {
+      "type": "text",
+      "id": "recover_email_placeholder",
+      "label": "Email placeholder recover",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "recover_submit",
+      "label": "Recover button",
+      "default": "Reset"
+    },
+    {
+      "type": "text",
+      "id": "recover_back",
+      "label": "Return button",
+      "default": "I remembered my password"
+    },
+    {
+      "type": "header",
+      "content": "Error"
+    },
+    {
+      "type": "text",
+      "id": "login_error",
+      "label": "Error"
+    }
+  ]
+}
+{% endschema %}

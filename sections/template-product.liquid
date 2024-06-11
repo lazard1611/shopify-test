@@ -1,0 +1,327 @@
+{{ 'template-product.css' | asset_url | stylesheet_tag }}
+
+{% render "breadcrumbs" %}
+<div class="product" data-product-image-url="{{ product.images[0] | image_url }}" data-product-available="{{ product.available }}" data-product-url="{{ product.url }}" data-product-name = "{{ product.title }}", data-product-published-at="{{ product.published_at }}">
+    <div class="product__container base-section-limit">
+        <div class="product__swiper-container">
+            <div class="swiper product__swiper" id="product-page-swiper">
+                <div class="swiper-wrapper product__swiper-wrapper">
+                    {% for media in product.media %}
+                        {% if media.media_type == 'image' %}
+                            <div class="swiper-slide product__swiper-slide">
+                                <img
+                                    src="{{ media | image_url }}"
+                                    alt="{{ product.title }} image {{ forloop.index }}"
+                                    width="auto"
+                                    height="auto"
+                                    loading="lazy"
+                                    class="product__image--desktop"
+                                >
+                            </div>
+                        {% endif %}
+                        {% if media.media_type == 'video' %}
+                            <div class="swiper-slide product__swiper-slide product__swiper-slide--video">
+                                <div class="swiper-zoom-target">
+                                    <video
+                                        class="product__image--desktop"
+                                        width="auto"
+                                        height="auto"
+                                        autoplay 
+                                        muted 
+                                        loop
+                                    >
+                                        <source src="{{ media.sources[1].url  }}" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="swiper product__thumb-swiper" id="product-swiper-slides">
+                <div class="swiper-wrapper product__thumb-wrapper">
+                    {% for media in product.media %}
+                        {% if media.media_type == 'image' %}
+                            <div class="swiper-slide product__thumb-slide">
+                                <img
+                                    src="{{ media | image_url }}"
+                                    alt="{{ product.title }} image {{ forloop.index }}"
+                                    width="auto"
+                                    height="auto"
+                                    loading="lazy"
+                                    class="product__thumb-image"
+                                >
+                            </div>
+                        {% endif %}
+                        {% if media.media_type == 'video' %}
+                            <div class="swiper-slide product__thumb-slide">
+                                {% render 'icons-product', icon: 'video-icon' %}
+                                <img 
+                                    src="{{ media.preview_image.src | image_url }}"
+                                    alt="{{ product.title }}"
+                                    width="auto"
+                                    height="auto"
+                                    loading="lazy"
+                                    class="product__thumb-image"
+                                >
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    
+        <div class="swiper product__mobile-swiper" id="product-swiper-mobile">
+            <div class="swiper-wrapper">
+                {% for media in product.media %}
+                    {% if media.media_type == 'image' %}
+                        <div class="swiper-slide product__mobile-slide">
+                            <img
+                                src="{{ media | image_url }}"
+                                alt="{{ product.title }} image {{ forloop.index }}"
+                                width="auto"
+                                height="auto"
+                                loading="lazy"
+                                class="product__image"
+                            >
+                        </div>
+                    {% endif %}
+                    {% if media.media_type == 'video' %}
+                        <div class="swiper-slide product__swiper-slide product__mobile-slide">
+                            <div class="swiper-zoom-target">
+                                <video
+                                    class="product__image"
+                                    width="auto"
+                                    height="auto"
+                                    autoplay 
+                                    muted 
+                                    loop
+                                >
+                                    <source src="{{ media.sources[1].url }}" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>  
+
+        <div class="product__info" id="product-main-info">
+            <div class="product__info-inner">
+                <div class="product__info-top">
+                    <div class="product__info-general"> 
+                        <p class="product__vendor">{{ product.vendor }}</p>
+
+                        {% assign product_date = product.published_at | date: "%s" %}
+                        {% assign current_date = 'now' | date: '%s' %}
+                        {% assign difference = current_date | minus: product_date | date: "%d" | plus: 0 %}
+
+                        {% if difference < 10 %}
+                            <div class="product-new">New</div>
+                        {% endif %}
+                    </div>
+                    
+                    <h1 class="product__title h1">{{ product.title }}</h1>
+
+                    {% comment %}
+                        Section for reviews
+                        <div class="product__reviews">
+                            REVIEWS
+                        </div>
+                    {% endcomment %}
+
+                    
+
+                    <div class="product__prices-box" id="prices-box" data-product-price="{{ product.selected_or_first_available_variant.price }}" data-product-compare-price="{{ product.selected_or_first_available_variant.compare_at_price }}">
+                        {% assign product_price = product.selected_or_first_available_variant %}
+                        <div class="product__prices-current {% if product_price.compare_at_price %}product__prices-current--active{% endif %}" data-price-item>{{ product_price.price | money |  replace: ',', '.' }}</div>
+                        {% if product_price.compare_at_price != blank %}
+                            <div class="product__prices-compare">{{ product_price.compare_at_price | money }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if product.metafields.custom.product_subtitle != blank %}
+                    <p class="product__subtitle">{{ product.metafields.custom.product_subtitle }}</p>
+                {% endif %}
+
+                {% if product.metafields.custom.recommended_for != blank %}
+                    <div class="product__recommend">
+                        <div class="product__recommend-title">{{ section.settings.recommend_text }}</div>
+                        <ul class="product__recommend-items">
+                            {% for item in product.metafields.custom.recommended_for.value %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            
+                
+                <div class="product__info-middle">
+                    <div class="product__counter-container">
+                        <div class="product__counter product__counter-box">
+                            <button class="product__decrease-button" data-count-button="-1">-</button>
+                                <span data-count-container>1</span>
+                            <button class="product__increase-button" data-count-button="1" {% unless product.available %}disabled{% endunless %}>+</button>
+                        </div>
+                        {% if product.variants.size > 1 %}
+                            <div class="product__variants" id="variant-box">
+                                {% assign variants_size = product.variants | size %}
+                                <div class="product__variants-box"> <span id="variant-box-title">{{ product.selected_or_first_available_variant.title }}</span> {% if variants_size > 1 %} {% render 'general-icons', icon: 'input-arrow' %} {% endif %}</div>
+                                <div class="product__options dn" id="options-box">
+                                    {% for product in product.variants %}
+                                        <input
+                                        class="product__variant-input"
+                                        type="hidden"
+                                        name="{{ product.name }}"
+                                        id="{{ product.id }}"
+                                        value="{{ product.id }}" 
+                                    >
+                                        <label class="product__variant-label" for="{{ product.name }}" value="{{ product.id }}"  data-product-title="{{ product.title }}" data-product-variant-price="{{ product.price }}" data-product-variant-compare-price="{{ product.compare_at_price }}">{{ product.title }}</label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div data-revy-bundle-id="ef0f61ba-13bf-445c-a289-f071e924719c"></div>
+                    <div class="product__buttons">
+                        <button
+                            class="product__cart-button"
+                            data-seen="{{ product.selected_or_first_available_variant.id }}"
+                            data-add-to-cart="{{ product.selected_or_first_available_variant.id }}"
+                            data-product-quantity="1"
+                            {% unless product.available %}disabled{% endunless %}
+                        >
+                            <span>{{ section.settings.cart_text }}</span> {% render 'icons-product', icon: 'cart' %}
+                        </button>
+                    </div>
+                
+                    <div class="product__info-messages">
+                        <div class="product__info-delivery">{% render 'icons-product', icon: 'delivery-car' %}{{ section.settings.delivery_text }}</div>
+                        <div class="product__info-sample">{% render 'icons-product', icon: 'sample' %} {{ section.settings.sample_text }} </div>
+                    </div>
+                </div>
+
+                <div class="product__info-bottom">
+                    <div class="bottom__tab">
+                        <input type="checkbox" class="bottom__tab-input" id="{{ section.id }}-1">
+                        <label class="bottom__label" for="{{ section.id }}-1">
+                            <span class="bottom__tab-title">
+                                {{ section.settings.descr_text }} 
+
+                                <div class="bottom__tab-arrow">
+                                    {% render 'general-icons', icon: 'input-arrow' %}
+                                </div>
+                            </span>
+                        </label>
+                        <div class="bottom__tab-content">
+                            {{ product.description }}
+                        </div>
+                    </div>
+                    {% if product.metafields.custom.ingredients.value %}
+                        <div class="bottom__tab">
+                            <input type="checkbox" class="bottom__tab-input" id="{{ section.id }}-2">
+                            <label class="bottom__label" for="{{ section.id }}-2">
+                                <span class="bottom__tab-title">
+                                    {{ section.settings.ingredients_text }} 
+                                    
+                                    <div class="bottom__tab-arrow">
+                                        {% render 'general-icons', icon: 'input-arrow' %}
+                                    </div>
+                                </span>
+                            </label>
+                            <ul class="bottom__tab-content bottom__tab-ingredients">
+                                {% for item in product.metafields.custom.ingredients.value %}
+                                    <li>{{ item }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" defer src="{{ 'template-product.js' | asset_url }}"></script>
+
+{% schema %}
+{
+    "name": "Product page",
+    "settings": [
+            {
+                "type": "text",
+                "id": "cart_text",
+                "label": "Add to cart text",
+                "default": "Add to cart"
+            },
+            {
+                "type": "text",
+                "id": "delivery_text",
+                "label": "Free express delivery text"
+            },
+            {
+                "type": "text",
+                "id": "sample_text",
+                "label": "Complimentary samples text"
+            },
+            {
+                "type": "text",
+                "id": "descr_text",
+                "label": "Description text"
+            },
+            {
+                "type": "text",
+                "id": "ingredients_text",
+                "label": "Ingredients text"
+            },
+            {
+                "type": "text",
+                "id": "recommend_text",
+                "label": "Recommend text"
+            }
+        ],
+    "blocks": [
+        {
+            "type": "@app"
+        },
+        {
+            "name": "Vendor",
+            "type": "vendor"
+        },
+        {
+            "name": "Title",
+            "type": "title"
+        },
+        {
+            "name": "Price",
+            "type": "price"
+        },
+        {
+            "name": "Description",
+            "type": "descr"
+        },
+        {
+            "name": "Recommended",
+            "type": "Rec"
+        },
+        {
+            "name": "Quantity",
+            "type": "quantity"
+        },
+        {
+            "name": "Button",
+            "type": "button"
+        },
+        {
+            "name": "Delivery",
+            "type": "delivery"
+        },
+        {
+            "name": "Tabs",
+            "type": "tabs"
+        }
+    ]
+}
+{% endschema %}

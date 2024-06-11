@@ -1,0 +1,563 @@
+<link rel="stylesheet" href="{{ 'template-customer-addresses.css' | asset_url }}">
+
+<div class="template-account__wrapper contact-form__wrapper base-section-limit">
+	{% comment %}New address form{% endcomment %}
+	<div class="form-default hide" id="newAddressForm">
+		<div class="form-default__header">
+			<h2 class="form-default__title h1">{{ section.settings.new_form_title }}</h2>
+			<p class="form-default__description">{{ section.settings.new_form_description }}</p>
+		</div>
+
+		{% form 'customer_address', customer.new_address, class: "form-default__form" %}
+			<div class="form-default__box">
+				<div class="form-default__box-half">
+					<label for="address_fname_{{ form.id }}" class="form-default__label">{{ section.settings.first_name_placeholder }}</label>
+					<input
+						type="text"
+						name="address[first_name]"
+						id="address_fname_{{ form.id }}"
+						value="{{ form.first_name }}"
+						class="input"
+						placeholder="{{ section.settings.first_name_placeholder }}"
+						required
+					>
+				</div>
+				<div class="form-default__box-half">
+					<label for="address_lname_{{ form.id }}" class="form-default__label">{{ section.settings.last_name_placeholder }}</label>
+					<input
+						type="text"
+						name="address[last_name]"
+						id="address_lname_{{ form.id }}"
+						value="{{ form.last_name }}"
+						class="input"
+						placeholder="{{ section.settings.last_name_placeholder }}"
+						required
+					>
+				</div>
+
+				<div class="form-default__box-half">
+					<label for="address_address1_{{ form.id }}" class="form-default__label">{{ section.settings.address1_placeholder }}</label>
+					<input
+						type="text"
+						name="address[address1]"
+						id="address_address1_{{ form.id }}"
+						value="{{ form.address1 }}"
+						class="input"
+						placeholder="{{ section.settings.address1_placeholder }}"
+						required
+					>
+				</div>
+				<div class="form-default__box-half">
+					<label for="address_address2_{{ form.id }}" class="form-default__label">{{ section.settings.address2_placeholder }}</label>
+					<input
+						type="text"
+						name="address[address2]"
+						id="address_address2_{{ form.id }}"
+						value="{{ form.address2 }}"
+						class="input"
+						placeholder="{{ section.settings.address2_placeholder }}"
+						required
+					>
+				</div>
+				<div class="form-default__box-half">
+					<label for="address_city_{{ form.id }}" class="form-default__label">{{ section.settings.city_placeholder }}</label>
+					<input
+						type="text"
+						name="address[city]"
+						id="address_city_{{ form.id }}"
+						value="{{ form.city }}"
+						class="input"
+						placeholder="{{ section.settings.city_placeholder }}"
+						required
+					>
+				</div>
+				<div class="form-default__box-half select">
+					<label for="address_country_{{ form.id }}" class="form-default__label"></label>
+					<select
+						name="address[country]"
+						id="address_country_{{ form.id }}"
+						value="{{ form.country }}"
+						class="form-default__select"
+						data-country-selector
+						data-id="{{ form.id }}"
+					>
+						<option value="" disabled selected>Country</option>
+						{{ all_country_option_tags }}
+					</select>
+					<div class="form-default__select-arrow">
+						{% render 'general-icons', icon: 'input-arrow' %}
+					</div>
+				</div>
+			</div>
+			<div class="form-default__item">
+				<label for="address_zip_{{ form.id }}" class="form-default__label">{{ section.settings.zip_placeholder }}</label>
+				<input
+					type="text"
+					name="address[zip]"
+					id="address_zip_{{ form.id }}"
+					value="{{ form.zip }}"
+					class="input"
+					placeholder="{{ section.settings.zip_placeholder }}"
+				>
+			</div>
+			<div class="form-default__item">
+				<label for="address_phone_{{ form.id }}" class="form-default__label">{{ section.settings.phone_placeholder }}</label>
+				<input
+					type="tel"
+					name="address[phone]"
+					id="address_phone_{{ form.id }}"
+					value="{{ form.phone }}"
+					class="input"
+					placeholder="{{ section.settings.phone_placeholder }}"
+				>
+			</div>
+			<div class="form-default__checkbox">
+				<label for="form-default__checkbox-input" class="form-default__checkbox-label">{{ section.settings.checkbox_label }}
+					<input
+						type="checkbox"
+						id="form-default__checkbox-input"
+						class="form-default__checkbox-input"
+						name="address[default]"
+						value="1"
+					>
+					<span class="checkmark"></span>
+				</label>
+			</div>
+			<div class="form-default__button">
+				<div class="form-default__button-box">
+					<a href="#" class="form-default__button-delete" id="canselButton">{{ section.settings.new_form-cancel }}</a>
+					<input type="submit" class="form-default__button-submit" value="{{ section.settings.new_form-add }}">
+				</div>
+			</div>
+		{% endform %}
+	</div>
+
+	{% comment %}Edit form{% endcomment %}
+
+	{% if customer.addresses != blank %}
+		{% for address in customer.addresses %}
+			<div class="form-default hide" data-address-form="{{ address.id }}">
+				<div class="form-default__header">
+					<h2 class="form-default__title h1">{{ section.settings.edit_form_title }}</h2>
+					<p class="form-default__description">{{ section.settings.edit_form_description }}</p>
+				</div>
+
+				{% form 'customer_address', address, class: "form-default__form" %}
+					<div class="form-default__box">
+						<div class="form-default__box-half">
+							<label for="address_fname_{{ form.id }}" class="form-default__label">{{ section.settings.first_name_placeholder }}</label>
+							<input
+									type="text"
+									name="address[first_name]"
+									id="address_fname_{{ form.id }}"
+									value="{{ form.first_name }}"
+									class="input"
+									placeholder="{{ section.settings.first_name_placeholder }}"
+									required
+							>
+						</div>
+						<div class="form-default__box-half">
+							<label for="address_lname_{{ form.id }}" class="form-default__label">{{ section.settings.last_name_placeholder }}</label>
+							<input
+									type="text"
+									name="address[last_name]"
+									id="address_lname_{{ form.id }}"
+									value="{{ form.last_name }}"
+									class="input"
+									placeholder="{{ section.settings.last_name_placeholder }}"
+									required
+							>
+						</div>
+
+						<div class="form-default__box-half">
+							<label for="address_address1_{{ form.id }}" class="form-default__label">{{ section.settings.address1_placeholder }}</label>
+							<input
+									type="text"
+									name="address[address1]"
+									id="address_address1_{{ form.id }}"
+									value="{{ form.address1 }}"
+									class="input"
+									placeholder="{{ section.settings.address1_placeholder }}"
+									required
+							>
+						</div>
+						<div class="form-default__box-half">
+							<label for="address_address2_{{ form.id }}" class="form-default__label">{{ section.settings.address2_placeholder }}</label>
+							<input
+									type="text"
+									name="address[address2]"
+									id="address_address2_{{ form.id }}"
+									value="{{ form.address2 }}"
+									class="input"
+									placeholder="{{ section.settings.address2_placeholder }}"
+									required
+							>
+						</div>
+						<div class="form-default__box-half">
+							<label for="address_city_{{ form.id }}" class="form-default__label">{{ section.settings.city_placeholder }}</label>
+							<input
+									type="text"
+									name="address[city]"
+									id="address_city_{{ form.id }}"
+									value="{{ form.city }}"
+									class="input"
+									placeholder="{{ section.settings.city_placeholder }}"
+									required
+							>
+						</div>
+						<div class="form-default__box-half select">
+							<label for="address_country_{{ form.id }}" class="form-default__label"></label>
+							<select
+									name="address[country]"
+									id="address_country_{{ form.id }}"
+									value="{{ form.country }}"
+									class="form-default__select"
+									data-country-selector
+									data-id="{{ form.id }}"
+							>
+								<option value="" disabled selected>{{ form.country }}</option>
+								{{ all_country_option_tags }}
+							</select>
+							<div class="form-default__select-arrow">
+								{% render 'general-icons', icon: 'input-arrow' %}
+							</div>
+						</div>
+					</div>
+					<div class="form-default__item">
+						<label for="address_zip_{{ form.id }}" class="form-default__label">{{ section.settings.zip_placeholder }}</label>
+						<input
+								type="text"
+								name="address[zip]"
+								id="address_zip_{{ form.id }}"
+								value="{{ form.zip }}"
+								class="input"
+								placeholder="{{ section.settings.zip_placeholder }}"
+						>
+					</div>
+					<div class="form-default__item">
+						<label for="address_phone_{{ form.id }}" class="form-default__label">{{ section.settings.phone_placeholder }}</label>
+						<input
+								type="tel"
+								name="address[phone]"
+								id="address_phone_{{ form.id }}"
+								value="{{ form.phone }}"
+								class="input"
+								placeholder="{{ section.settings.phone_placeholder }}"
+						>
+					</div>
+					<div class="form-default__checkbox">
+						<label for="form-default__checkbox-input" class="form-default__checkbox-label">{{ section.settings.checkbox_label }}
+							<input
+									type="checkbox"
+									id="form-default__checkbox-input"
+									class="form-default__checkbox-input"
+									name="address[default]"
+									value="1"
+									{% if address == customer.default_address %}checked{% endif %}
+							>
+							<span class="checkmark"></span>
+						</label>
+					</div>
+					<div class="form-default__button">
+						<div class="form-default__button-box">
+							<input type="submit" class="form-default__button-submit" data-edit="{{ address.id }}" value="{{ section.settings.edit_form }}">
+							<a href="#" class="form-default__button-delete" data-address-button-return>{{ section.settings.new_form-cancel }}</a>
+						</div>
+					</div>
+				{% endform %}
+			</div>
+		{% endfor %}
+
+	{% endif %}
+
+	{% comment %}customer addresses template{% endcomment %}
+	<div class="template-account__header" id="addressesTemplateTitle">
+		<h1 class="template-account__title h1">{{ section.settings.account_title }}</h1>
+		<a class="template-account__logout" href="/account/logout" id="customer_logout_link">{{ section.settings.logout_button }}</a>
+	</div>
+	<div class="template-account__content" id="addressesTemplateContent">
+		<div class="contact-form__navigation template-account__navigation">
+			<nav class="contact-navigation">
+				<a href="{{ routes.account_url }}" class="contact-navigation__link{% if request.path == routes.account_url %} active{% endif %}">
+            <span class="contact-navigation__title title">
+                <span>{{ section.settings.orders }}</span>
+            </span>
+				</a>
+				<a href="{{ routes.account_addresses_url }}" class="contact-navigation__link{% if request.path == routes.account_addresses_url %} active{% endif %}">
+            <span class="contact-navigation__title title">
+                <span>{{ section.settings.addresses }}</span>
+            </span>
+				</a>
+			</nav>
+		</div>
+		<div class="contact-form__form">
+			{% if customer.addresses != blank %}
+				<div class="template-account__cards">
+					{% paginate customer.addresses by 10 %}
+						{% for address in customer.addresses %}
+							<div class="template-account__card" data-address-filter="{{ address.id }}">
+								<div class="template-account__top">
+									<div class="template-account__top-name">{{ address.name }}</div>
+									{% if address == customer.default_address %}
+										<p class="template-account__top-status">{{ section.settings.status }}</p>
+									{% endif %}
+								</div>
+								<div class="template-account__address">
+									{% if address.country %}<span>{{ address.country }}</span>{% endif %}
+									{% if address.city %}<span>{{ address.city }}</span>{% endif %}
+									{% if address.address1 %}<span>{{ address.address1 }}</span>{% endif %}
+									{% if address.address2 %}<span>{{ address.address2 }}</span>{% endif %}
+									{% if address.phone %}<span>{{ address.phone }}</span>{% endif %}
+									{% if address.zip %}<span>{{ address.zip }}</span>{% endif %}
+								</div>
+								<div>
+									<div class="template-account__buttons">
+										<button type="button" class="template-account__buttons-delete" data-url="{{ address.url }}"
+										        data-delete-address>
+											{{ section.settings.button_delete }}
+										</button>
+										<button type="button" class="template-account__buttons-edit"
+										        data-address-edit-button="{{ address.id }}">
+											{{ section.settings.button_edit }}
+										</button>
+									</div>
+									<form method="post" action="{{ address.url }}">
+										<input type="hidden" name="_method" value="delete">
+									</form>
+								</div>
+							</div>
+						{% endfor %}
+					{% endpaginate %}
+				</div>
+			{% else %}
+				<p class="template-account__empty">{{ section.settings.empty_addresses }}</p>
+			{% endif %}
+
+			<div class="template-account__new-address">
+				<button
+					type="button"
+			        class="template-account__new-address button"
+					id="createNewAddress"
+				>
+					{{ section.settings.new_address }}
+				</button>
+			</div>
+		</div>
+		<div class="contact-form__gallery">
+			{% for block in section.blocks %}
+				{% if block.type == "gallery" and block.settings.image != blank %}
+					{% if forloop.index == 1 %}
+						<div class="contact-form__gallery-main">
+							<img src="{{ block.settings.image | image_url }}"
+							     alt="Gallery image"
+							     width="auto"
+							     height="auto"
+							     class="contact-form__gallery-img"
+							     loading="eager"
+							>
+						</div>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+			<div class="contact-form__gallery-second">
+				{% for block in section.blocks %}
+					{% if block.type == "gallery" and block.settings.image != blank %}
+						{% if forloop.index != 1 %}
+							<div class="contact-form__gallery-wrapper ">
+								<img src="{{ block.settings.image | image_url }}"
+								     alt="Gallery image"
+								     width="auto"
+								     height="auto"
+								     class="contact-form__gallery-img"
+								     loading="eager"
+								>
+							</div>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="{{ 'template-customer-addresses.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Account",
+  "class": "template-account contact-form",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "account_title",
+      "label": "Title",
+      "default": "Account"
+    },
+    {
+      "type": "text",
+      "id": "logout_button",
+      "label": "Logout button",
+      "default": "Log out"
+    },
+    {
+      "type": "text",
+      "id": "orders",
+      "label": "Orders link",
+      "default": "My orders"
+    },
+    {
+      "type": "text",
+      "id": "addresses",
+      "label": "Personal information link",
+      "default": "My information"
+    },
+    {
+      "type": "header",
+      "content": "Addresses"
+    },
+    {
+      "type": "text",
+      "id": "status",
+      "label": "Address status",
+      "default": "Default"
+    },
+    {
+      "type": "text",
+      "id": "button_delete",
+      "label": "Delete button title",
+      "default": "Delete"
+    },
+    {
+      "type": "text",
+      "id": "button_edit",
+      "label": "Edit button title",
+      "default": "Edit"
+    },
+    {
+      "type": "text",
+      "id": "new_address",
+      "label": "New address button title",
+      "default": "Add new address"
+    },
+    {
+      "type": "text",
+      "id": "new_form_title",
+      "label": "New form title",
+      "default": "Add address"
+    },
+    {
+      "type": "header",
+      "content": "New form"
+    },
+    {
+      "type": "text",
+      "id": "new_form_description",
+      "label": "New form description",
+      "default": "My information"
+    },
+    {
+      "type": "text",
+      "id": "first_name_placeholder",
+      "label": "First name placeholder",
+      "default": "First name"
+    },
+    {
+      "type": "text",
+      "id": "last_name_placeholder",
+      "label": "Last name placeholder",
+      "default": "Last name"
+    },
+    {
+      "type": "text",
+      "id": "address1_placeholder",
+      "label": "Address placeholder",
+      "default": "Address"
+    },
+    {
+      "type": "text",
+      "id": "address2_placeholder",
+      "label": "Apartment placeholder",
+      "default": "Apartment, suite, etc."
+    },
+    {
+      "type": "text",
+      "id": "city_placeholder",
+      "label": "City placeholder",
+      "default": "City"
+    },
+    {
+      "type": "text",
+      "id": "zip_placeholder",
+      "label": "Zip placeholder",
+      "default": "Zip code"
+    },
+    {
+      "type": "text",
+      "id": "phone_placeholder",
+      "label": "Phone placeholder",
+      "default": "Phone number"
+    },
+    {
+      "type": "text",
+      "id": "checkbox_label",
+      "label": "Checkbox label",
+      "default": "Set as default address"
+    },
+    {
+      "type": "text",
+      "id": "new_form-add",
+      "label": "Button add new address title",
+      "default": "Add address"
+    },
+    {
+      "type": "text",
+      "id": "new_form-cancel",
+      "label": "Return button label",
+      "default": "Cancel"
+    },
+    {
+      "type": "text",
+      "id": "empty_addresses",
+      "label": "Empty addresses text",
+      "default": "Sorry but you don't have any address yet"
+    },
+    {
+      "type": "header",
+      "content": "Edit form"
+    },
+    {
+      "type": "text",
+      "id": "edit_form_title",
+      "label": "Edit form title",
+      "default": "Edit address"
+    },
+    {
+      "type": "text",
+      "id": "edit_form_description",
+      "label": "Edit form description",
+      "default": "My information"
+    },
+    {
+      "type": "text",
+      "id": "edit_form",
+      "label": "Edit form button",
+      "default": "Save changes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery",
+      "name": "Gallery",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Gallery image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

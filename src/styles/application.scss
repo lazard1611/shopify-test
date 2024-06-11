@@ -1,0 +1,52 @@
+/* ==================================================== IMPORTS ==================================================== */
+//application
+@import './variables.scss';
+@import './normalize.scss';
+@import './fonts.scss';
+//modules
+// @import '../../node_modules/swiper/swiper-bundle.css';
+/* ===================================================== COMMON ==================================================== */
+body {
+    // position: relative;
+    // display: flex;
+    // flex-direction: column;
+    // width: 100%;
+    // max-width: 100dvw;
+    // min-height: 100vh;
+    // color: $lighter_black-color;
+    // font-family: 'Barlow';
+    // font-weight: 400;
+    // line-height: 1;
+    // background-color: $lighten_yellow-color;
+    // scroll-behavior: auto;
+
+    // &.scroll-hidden {
+    //     overflow: hidden;
+    // }
+}
+
+// main {
+//     flex: 1 0 auto;
+// }
+
+// footer {
+//     flex: 0 0 auto;
+// }
+
+// body,
+// textarea,
+// ul {
+//     &::-webkit-scrollbar {
+//         width: 10px;
+//         background-color: $lighten_yellow-color;
+//     }
+
+//     &::-webkit-scrollbar-thumb {
+//         border-radius: 10px;
+//         background-color: $green-color;    
+//     }
+
+//     &::-webkit-scrollbar-track {
+//         background-color: $lighten_yellow-color;
+//     }
+// }

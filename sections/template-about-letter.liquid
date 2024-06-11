@@ -1,0 +1,115 @@
+{{ 'template-about-letter.css' | asset_url | stylesheet_tag }}
+
+<div class="about-letter__wrapper base-section-limit" id="about-letter">
+	<div class="about-letter__container">
+		<div class="about-letter__content">
+			<h3 class="about-letter__title h1">{{ section.settings.title }}</h3>
+			<div class="about-letter__text">{{ section.settings.content }}</div>
+			<div class="about-letter__signature desktop">
+				<div class="about-letter__signature-image">
+					<img src="{{ section.settings.autograph | image_url }}"
+					     alt="Gallery image"
+					     width="auto"
+					     height="auto"
+					     class="about-letter__gallery-img"
+					     loading="eager"
+					>
+				</div>
+				<p class="about-letter__signature-name">{{ section.settings.name }}</p>
+			</div>
+		</div>
+
+		<div class="about-letter__gallery">
+			{% for block in section.blocks %}
+				{% if block.type == "gallery" and block.settings.image != blank %}
+					{% if forloop.index == 1 %}
+						<div class="about-letter__gallery-main">
+							<img src="{{ block.settings.image | image_url }}"
+							     alt="Gallery image"
+							     width="auto"
+							     height="auto"
+							     class="about-letter__gallery-img"
+							     loading="eager"
+							>
+						</div>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+			<div class="about-letter__gallery-second">
+				{% for block in section.blocks %}
+					{% if block.type == "gallery" and block.settings.image != blank %}
+						{% if forloop.index != 1 %}
+							<div class="about-letter__gallery-wrapper ">
+								<img src="{{ block.settings.image | image_url }}"
+								     alt="Gallery image"
+								     width="auto"
+								     height="auto"
+								     class="about-letter__gallery-img"
+								     loading="eager"
+								>
+							</div>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+		<div class="about-letter__signature mobile">
+			<div class="about-letter__signature-image">
+				<img src="{{ section.settings.autograph | image_url }}"
+				     alt="Gallery image"
+				     width="auto"
+				     height="auto"
+				     class="about-letter__gallery-img"
+				     loading="eager"
+				>
+			</div>
+			<p class="about-letter__signature-name">{{ section.settings.name }}</p>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+  "name": "Template about letter",
+  "class": "about-letter",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Breaking Free from the Beauty B.S."
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "autograph",
+      "label": "Image for autograph"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Name",
+      "default": "Evelien Kahn, founder of MDV"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery",
+      "name": "Gallery",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Gallery image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

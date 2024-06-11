@@ -1,0 +1,39 @@
+<nav class="header__mobile-wrapper">
+    {% for link in section.settings.menu.links %}
+        <a class="header__mobile-menu" href="{{ link.url }}" {% if link.links.size > 0 %}data-header-megamenu-link="{{ forloop.index }}" {% else %}data-header-megamenu-sublinks{% endif %}>
+            <span class="header__mobile-title">
+                <span>{{ link.title }}</span>
+                {% if link.links.size > 0 %}
+                    <span class="header__mobile-arrow close">
+                        {% render 'header-icons', icon: 'arrow-down' %}
+                    </span>
+                {% endif %}
+            </span>
+        </a>
+        {% if link.links.size > 0 %}
+            <div class="header__mobile-submenu" data-header-megamenu-block="{{ forloop.index }}">
+                <div class="submenu__wrapper">
+                    {% for childLink in link.links %}
+                        <div class="submenu__links">
+                            <a class="submenu__link" href="{{ childLink.url }}">{{ childLink.title }}</a>
+                            {% for childLinkOfChildLink in childLink.links %}
+                                <a href="{{ childLinkOfChildLink.url }}" class="submenu__childlink">{{ childLinkOfChildLink.title }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="header__mobile-bottom">
+        <a href="{{ routes.account_url }}" class="header__mobile-login">
+        <span  class="header__management-login login-link">
+            {% render 'header-icons', icon: 'account' %}
+        </span>
+            <span class="login-title">{{ section.settings.account }}</span>
+        </a>
+        <div class="header__management-wrapper mobile language-box" data-language-box>
+            {% render "language-switcher" %}
+        </div>
+    </div>
+</nav>

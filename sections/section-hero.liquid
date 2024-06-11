@@ -1,0 +1,103 @@
+<link rel="stylesheet" href="{{ 'section-hero.css' | asset_url }}">
+<style>
+    /* @media screen and (max-width: 991px) {
+        #shopify-section-{{ section.id }} {
+        {% if section.settings.image_mobile != blank %}
+            .hero-page__wrapper {
+                background-image: url("{{ section.settings.image_mobile | image_url }}");
+            }
+        {% endif %}
+        }
+    } */
+
+    .hero-page__wrapper {
+      background-image: url("{{ section.settings.image_mobile | image_url }}");
+    }
+
+    {% if section.settings.image_desktop != blank %}
+        @media screen and (min-width: 992px) {
+            #shopify-section-{{ section.id }} .hero-page__wrapper {
+                background-image: url("{{ section.settings.image_desktop | img_url: 'master' }}");
+            }
+        }
+    {% endif %}
+</style>
+
+<div class="hero-page__wrapper">
+    <div class="hero-page__item">
+        <div class="hero-page__information">
+            <h1 class="hero-page__title">{{ section.settings.title }}</h1>
+            {% render 'animated-button', text: section.settings.button, btn-url: section.settings.url %}
+        </div>
+        <div class="hero-page__product">
+            {% assign product_handle = section.settings.product %}
+            {% assign product = all_products[product_handle] %}
+                {% render 'product-card', product: product %}
+        </div>
+    </div>
+</div>
+<div class="hero-page__links">
+    {% for link in section.settings.menu.links %}
+        <a class="hero-page__links-link" href="{{ link.url }}">
+            <span class="hero-page__links-title title">
+                <span>{{ link.title }}</span>
+            </span>
+            <span class="hero-page__links-icon icon">
+                <span>{% render 'general-icons' icon: 'button-arrow' %}</span>
+            </span>
+        </a>
+    {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Section hero",
+  "class": "hero-page",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Our calling is to help you"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image for mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Image for desktop"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Section hero menu"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Caption for button",
+      "default": "Find your perfect care"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Button url"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section hero",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,41 @@
+{%- comment %}<locksmith:4426>{% endcomment -%}
+  {%- include 'locksmith' -%}
+{%- comment %}</locksmith:4426>{% endcomment -%}
+
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+    <head>
+        {{ locksmith_initializations }}
+        <meta charset="UTF-8">
+        <!-- mobile optimization -->
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="format-detection" content="date=no">
+        <meta name="format-detection" content="address=no">
+        <meta name="format-detection" content="email=no">
+        <link rel="canonical" href="{{ canonical_url }}">
+        <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+        {% if settings.favicon != blank %}
+            <link 
+              rel="icon"
+              type="image/png"
+              href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+        {% endif %}
+
+        {{ 'application.css' | asset_url | stylesheet_tag }}
+
+        {{ content_for_header }} <!-- Header hook for plugins -->
+    </head>
+    <body>
+        {% sections 'header-group' %}
+        <div class="bg-block" id="bg-block"></div>
+        <div class="bg-block" id="bg-block-gift"></div>
+        <main class="main"> 
+            {{ content_for_layout }}
+        </main>
+        <div class="bg-block" id="bg-drop"></div>
+        {% section 'footer' %}
+        <script src="{{ 'application.js' | asset_url }}" type="module" defer></script>
+    </body>
+</html>

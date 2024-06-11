@@ -1,0 +1,1 @@
+{"sections":{"main":{"type":"template-customer-register","settings":{"image":"shopify:\/\/shop_images\/Login_image.webp","title":"Create account","first_name_placeholder":"First name","last_name_placeholder":"Last name","email_placeholder":"Email","password_placeholder":"Password","btn_main":"Register","account_exist":"already have an account","error":""}}},"order":["main"]}

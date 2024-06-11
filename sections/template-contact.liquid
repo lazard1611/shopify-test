@@ -1,0 +1,192 @@
+<link rel="stylesheet" href="{{ 'template-contact.css' | asset_url }}">
+
+<div class="contact-form__wrapper base-section-limit">
+	<div class="contact-form__navigation">{% render "contact-navigation" %}</div>
+	<div class="contact-form__form">
+		<div class="contact-form__header">
+			<h1 class="contact-form__title h1">{{ section.settings.title }}</h1>
+			<p class="contact-form__subtitle">{{ section.settings.description }}</p>
+		</div>
+		{% assign formId = 'contact-form' %}
+		{% form 'contact', id:formId %}
+			{{ form.errors | default_errors }}
+			<div class="contact-form__inputs">
+				<div class="contact-form__input">
+					<label for="{{ formId }}-first-name">{{ section.settings.first_name }}</label>
+					<input class="input" type="text" name="contact[first_name]" id="{{ formId }}-first-name" placeholder="{{ section.settings.first_name }}" required/>
+				</div>
+
+				<div class="contact-form__input">
+					<label for="{{ formId }}-last-name">{{ section.settings.last_name }}</label>
+					<input class="input" type="text" name="contact[last_name]" id="{{ formId }}-last-name" placeholder="{{ section.settings.last_name }}" required/>
+				</div>
+
+				<div class="contact-form__input">
+					<label for="{{ formId }}-email">{{ section.settings.email }}</label>
+					<input class="input" type="email" name="contact[email]" id="{{ formId }}-email" placeholder="{{ section.settings.email }}" required/>
+				</div>
+
+				<div class="contact-form__input">
+					<label for="{{ formId }}-phone">{{ section.settings.phone }}</label>
+					<input class="input" type="tel" name="contact[phone]" id="{{ formId }}-phone" placeholder="{{ section.settings.phone }}" required/>
+				</div>
+			</div>
+
+			<div class="contact-form__request">
+				<label for="{{ formId }}-request">{{ section.settings.taste }}</label>
+				<select id="{{ formId }}-request" name="contact[request]" required>
+					<option value="" disabled selected>{{ section.settings.request }}</option>
+					{% for block in section.blocks %}
+						{% if block.type == 'request' %}
+							<option>{{ block.settings.request }}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				<div class="contact-form__arrow">
+					{% render 'general-icons', icon: 'input-arrow' %}
+				</div>
+			</div>
+
+			<div class="contact-form__message">
+				<label for="{{ formId }}-message">{{ section.settings.message }}</label>
+				<textarea class="input" name="contact[body]" id="{{ formId }}-message" placeholder="{{ section.settings.message }}" required></textarea>
+			</div>
+
+			<div class="contact-form__submit">
+				<input class="contact-form__submit-btn" type="submit" value="{{ section.settings.button }}" />
+			</div>
+		{% endform %}
+	</div>
+	<div class="contact-form__gallery">
+		{% for block in section.blocks %}
+			{% if block.type == "gallery" and block.settings.image != blank %}
+				{% if forloop.index == 1 %}
+					<div class="contact-form__gallery-main">
+						<img src="{{ block.settings.image | image_url }}"
+						     alt="Gallery image"
+						     width="auto"
+						     height="auto"
+						     class="contact-form__gallery-img"
+						     loading="eager"
+						>
+					</div>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+		<div class="contact-form__gallery-second">
+			{% for block in section.blocks %}
+				{% if block.type == "gallery" and block.settings.image != blank %}
+					{% if forloop.index != 1 %}
+						<div class="contact-form__gallery-wrapper ">
+							<img src="{{ block.settings.image | image_url }}"
+							     alt="Gallery image"
+							     width="auto"
+							     height="auto"
+							     class="contact-form__gallery-img"
+							     loading="eager"
+							>
+						</div>
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+<script type="module" src="{{ 'template-contact.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "tag": "section",
+  "class": "contact-form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Title information"
+    },
+    {
+      "type": "link_list",
+      "id": "contact_menu",
+      "label": "Contact menu"
+    },
+    {
+      "type": "header",
+      "content": "Form settings"
+    },
+    {
+      "type": "text",
+      "id": "first_name",
+      "label": "Placeholder for first name",
+      "default": "First Name"
+    },
+    {
+      "type": "text",
+      "id": "last_name",
+      "label": "Placeholder for last name",
+      "default": "Last Name"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Placeholder for e-mail",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Placeholder for phone",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "request",
+      "label": "Placeholder for request",
+      "default": "Request"
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Placeholder for message",
+      "default": "Message"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Button name",
+      "default": "Send message"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery",
+      "name": "Gallery",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Gallery image"
+        }
+      ]
+    },
+    {
+      "name": "Request",
+      "type": "request",
+      "settings": [
+        {
+          "type": "text",
+          "id": "request",
+          "label": "Request"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

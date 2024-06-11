@@ -1,0 +1,26 @@
+<div class="product-card">
+    <a class="product-card__image-wrapper" href="{{ product.url }}">
+        <div class="product-card__image-container">
+            <img src="{{ product.featured_image | image_url }}" alt="{{ product.featured_image.src }}" loading="lazy" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}">
+            <button class="buy-btn"{% unless product.available %} disabled{% endunless %} data-add-to-cart="{{ product.selected_or_first_available_variant.id }}" data-product-quantity="1">
+                <span>Add to cart</span><div class="buy-btn__icon">{% render 'general-icons' icon: 'button-arrow' %}</div>
+            </button>
+        </div>
+        {% assign product_date = product.published_at | date: "%s" %}
+        {% assign current_date = 'now' | date: '%s' %}
+        {% assign difference = current_date | minus: product_date | date: "%d" | plus: 0 %}
+
+        {% if difference < 10 %}
+            <div class="product-new product-new--card">New</div>
+        {% endif %}
+    </a>
+    <a href="{{ product.url }}" class="product-card__title">{{ product.title }}</a>
+    <div class="product-card__bottom">
+        <div class="bottom__prices">
+            {% if product.compare_at_price != blank %}
+                <div class="bottom__prices-compare">{{ product.compare_at_price | money }}</div>
+            {% endif %}
+            <div class="bottom__prices-current {% if product.compare_at_price %}bottom__prices-current--crossed{% endif %}">{{ product.price | money }}</div>
+        </div>
+    </div>
+</div>

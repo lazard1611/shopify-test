@@ -1,0 +1,174 @@
+<link rel="stylesheet" href="{{ 'section-comparison.css' | asset_url }}">
+
+<div class="comparison__wrapper">
+	<div class="comparison__title">
+		<h3 class="comparison__title-title">{{ section.settings.title }}</h3>
+		<p class="comparison__title-description">{{ section.settings.description }}</p>
+	</div>
+	<div class="comparison__categories">
+		{% capture newArray %}
+			{% for block in section.blocks %}
+				{% if block.type == "comparison" %}
+					{{ block.settings.category }}
+				{% endif %}
+			{% endfor %}
+		{% endcapture %}
+		{% assign uniqArray = newArray | split: ' ' | uniq %}
+		<ul class="comparison__categories-list">
+			<li class="comparison__categories-item active" id="category-all">
+				All
+			</li>
+			{% for category in uniqArray %}
+				<li class="comparison__categories-item" id="category-review" data-category-review="{{ category }}">
+					{{ category }}
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="comparison__review swiper-container" id="data-comparison-swiper">
+      <div class="swiper-wrapper" data-component="image-comparison-slider">
+        {% for block in section.blocks %}
+          {% if block.type == "comparison" %}
+            {% render 'review-card', block: block %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination" id="data-comparison-pagination"></div>
+	</div>
+</div>
+
+<script type="module" src="{{ 'section-comparison.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "Section comparison",
+  "class": "comparison",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Before & After"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "We are so happy that we’re able to help those who had been struggled with their skin. We are proud to show their successful results of beauty."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison",
+      "name": "Comparison",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Before photo"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "After photo"
+        },
+        {
+          "type": "textarea",
+          "id": "response",
+          "label": "Response"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "category",
+          "options": [
+            {
+              "value": "Acne",
+              "label": "Acne"
+            },
+            {
+              "value": "Spots",
+              "label": "Spots"
+            },
+            {
+              "value": "Texture",
+              "label": "Texture"
+            },
+            {
+              "value": "Fine lines",
+              "label": "Fine lines"
+            },
+            {
+              "value": "Scarring",
+              "label": "Scarring"
+            },
+            {
+              "value": "Hydrating",
+              "label": "Hydrating"
+            },
+            {
+              "value": "Pigmentation",
+              "label": "Pigmentation"
+            },
+            {
+              "value": "Plumping",
+              "label": "Plumping"
+            }
+          ],
+          "default": "Acne"
+        },
+        {
+          "type": "select",
+          "id": "rating",
+          "label": "Rating",
+          "options": [
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            },
+            {
+              "value": "5",
+              "label": "5"
+            }
+          ],
+          "default": "5"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "button_caption",
+          "label": "Caption for button"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section comparison",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

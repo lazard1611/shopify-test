@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="{{ 'template-customer-register.css' | asset_url }}">
+
+
+<div class="template-register__wrapper">
+	<div class="template-register__box">
+		<div class="template-register__top">
+			<div class="template-register__title h1">{{ section.settings.title }}</div>
+			{% form 'create_customer', class: "form" %}
+				{% render 'form-error', form: form %}
+				<div class="template-login__form-top">
+					<div class="template-register__form-box">
+						<label for="first_name" class="template-login__form-label">{{ section.settings.first_name_placeholder }}</label>
+						<input
+							type="text"
+							name="customer[first_name]"
+							id="first_name"
+							autocomplete="given-name"
+							class="input"
+							placeholder="{{ section.settings.first_name_placeholder }}"
+							required
+						>
+					</div>
+
+					<div class="template-register__form-box">
+						<label for="last_name" class="template-login__form-label">{{ section.settings.last_name_placeholder }}</label>
+						<input
+							type="text"
+							name="customer[last_name]"
+							id="last_name"
+							autocomplete="family-name"
+							class="input"
+							placeholder="{{ section.settings.last_name_placeholder }}"
+							required
+						>
+					</div>
+
+					<div class="template-register__form-box">
+						<label for="email_address" class="template-login__form-label">{{ section.settings.email_placeholder }}</label>
+						<input
+							type="email"
+							name="customer[email]"
+							id="email_address"
+							autocomplete="email"
+							class="input"
+							placeholder="{{ section.settings.email_placeholder }}"
+							required
+						>
+					</div>
+
+					<div class="template-register__form-box">
+						<label for="password" class="template-login__form-label">{{ section.settings.password_placeholder }}</label>
+						<input
+							type="password"
+					        name="customer[password]"
+					        id="password"
+					        autocomplete="current-password"
+					        class="input"
+					        placeholder="{{ section.settings.password_placeholder }}"
+					        required
+						>
+					</div>
+
+					<input type="submit" class="template-register__form-login" value="{{ section.settings.btn_main }}">
+				</div>
+			{% endform %}
+			<a href="{{ routes.account_login_url }}" class="template-register__btn-forgot">{{ section.settings.account_exist }}</a>
+		</div>
+
+		<div class="template-register__photo">
+			{% if section.settings.image != blank %}
+				<img
+						src="{{ section.settings.image | image_url }}"
+						alt=""
+						width="auto"
+						height="auto"
+						loading="lazy"
+						class="template-register__photo-img"
+				>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Register",
+  "class": "template-register",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Register"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Create account"
+    },
+    {
+      "type": "text",
+      "id": "first_name_placeholder",
+      "label": "First name placeholder",
+      "default": "First name"
+    },
+    {
+      "type": "text",
+      "id": "last_name_placeholder",
+      "label": "Last name placeholder",
+      "default": "Last name"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Name placeholder",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "password_placeholder",
+      "label": "Password placeholder",
+      "default": "Password"
+    },
+    {
+      "type": "text",
+      "id": "btn_main",
+      "label": "Register button",
+      "default": "Register"
+    },
+    {
+      "type": "text",
+      "id": "account_exist",
+      "label": "Account exist",
+      "default": "already have an account"
+    },
+    {
+      "type": "header",
+      "content": "Error"
+    },
+    {
+      "type": "text",
+      "id": "error",
+      "label": "Error"
+    }
+  ]
+}
+{% endschema %}

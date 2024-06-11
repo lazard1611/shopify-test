@@ -1,0 +1,144 @@
+<link rel="stylesheet" href="{{ 'header.css' | asset_url }}">
+
+<div class="header__wrapper">
+    <nav class="header__navigation">
+        <nav class="header__navigation-wrapper">
+            {% for link in section.settings.menu.links %}
+                <a class="header__navigation-menu" href="{{ link.url }}" {% if link.links.size > 0 %}data-header-desktop-menu-link="{{ forloop.index }}" {% else %}data-header-megamenu-sublinks{% endif %}>
+            <span class="header__navigation-title menu-title">
+                <span>{{ link.title }}</span>
+                {% if link.links.size > 0 %}
+                    {% render 'header-icons', icon: 'arrow-down' %}
+                {% endif %}
+            </span>
+                </a>
+                {% if link.links.size > 0 %}
+                    <div class="header__navigation-submenu" data-header-desktop-menu-block="{{ forloop.index }}">
+                        <div class="submenu__wrapper">
+                            <div class="submenu__links">
+                            {% for childLink in link.links %}
+                                {% if childLink.type == 'http_link' or childLink.type == 'collection_link' %}
+                                <div class="submenu__items">
+                                        <a class="submenu__link" href="{{ childLink.url }}">{{ childLink.title }}</a>
+                                </div>
+                                        {% for childLinkOfChildLink in childLink.links %}
+                                            <a href="{{ childLinkOfChildLink.url }}" class="submenu__childlink">{{ childLinkOfChildLink.title }}</a>
+                                        {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            </div>
+                            <div class="submenu__products">
+                                {% for childLink in link.links %}
+                                    {% if childLink.type == 'product_link' %}
+                                        {% assign product_handle = childLink.url | split: '/' | last %}
+                                        {% assign product = all_products[product_handle] %}
+                                        {% if product %}
+                                            {% render 'product-card', product: product %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </nav>
+    </nav>
+    <div class="header__nav">
+        <div class="header__menu-button" data-mobile-navigation-button>
+            <label for="burger-menu"></label>
+            <input id="burger-menu" type="checkbox" name="burger-menu">
+            <div class="header__menu-strips">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+           
+        </div>
+        <div class="header__mobile" data-mobile-menu-wrapper>
+            <div class="header__mobile-inner" data-mobile-menu-popup>
+                {% render 'header-menu' %}
+            </div>
+        </div>
+    </div>
+    <div class="header__icon">
+        <a href="{{ routes.root_url }}" class="header__logo">
+            <img src="{{ section.settings.logo | image_url }}" class="header__logo-img" width="auto" height="auto" alt="Logo">
+        </a>
+        <p class="header__quote">{{ section.settings.quote }}</p>
+    </div>
+    <div class="header__management">
+        <a href="{{ routes.account_login_url }}" class="header__management-wrapper">
+            <span  class="header__management-login icon">
+                {% render 'header-icons', icon: 'account' %}
+            </span>
+            <span class="management-title">{{ section.settings.account }}</span>
+        </a>
+        <a href="/pages/swym-wishlist" class="header__management-wrapper">
+            <span class="header__management-wishlist icon">
+                {% render 'header-icons', icon: 'wishlist' %}
+            </span>
+            <span class="management-title">{{ section.settings.wishlist }}</span>
+        </a>
+        {% unless template.name == 'cart' %}
+            <button class="header__management-wrapper" data-cart-popup-toggle-btn>
+                <span  class="header__management-card icon">
+                    {% render 'header-icons', icon: 'card' %}
+                    <span data-cart-quantity class="header__management-card quantity">{{ cart.item_count }}</span>
+                </span>
+                <span class="management-title">{{ section.settings.card }}</span>
+            </button>
+        {% endunless %}
+        <div class="header__management-wrapper desktop language-box" data-language-box>
+            {% render "language-switcher" %}
+            <div class="language-box__overlay" data-language-overlay></div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="{{ 'header.js' | asset_url }}"></script>
+
+
+{% schema %}
+{
+    "name": "Header",
+    "tag": "header",
+    "class": "header",
+    "settings": [
+    {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+    },
+    {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu"
+    },
+    {
+        "type": "text",
+        "id": "quote",
+        "label": "Quote text",
+        "default": "Best in Beauty"
+    },
+    {
+        "type": "text",
+        "id": "account",
+        "label": "Account text",
+        "default": "Account"
+    },
+    {
+        "type": "text",
+        "id": "wishlist",
+        "label": "Wishlist text",
+        "default": "Wishlist"
+    },
+    {
+        "type": "text",
+        "id": "card",
+        "label": "Card text",
+        "default": "Bag"
+    }
+  ]
+}
+{% endschema %}

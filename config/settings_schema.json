@@ -1,0 +1,30 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "MDV Europe",
+    "theme_author": "Opklopper",
+    "theme_version": "1.0",
+    "theme_documentation_url": "https:\/\/opklopper.nl\/",
+    "theme_support_url": "https:\/\/opklopper.nl\/"
+  },
+  {
+    "name": "User settings",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Media"
+      },
+      {
+        "type": "image_picker",
+        "label": "Favicon logo",
+        "id": "favicon"
+      },
+      {
+        "type": "number",
+        "label": "Free shipping minimal sum in cents",
+        "id": "shipping_sum",
+        "default": 5000
+      }
+    ]
+  }
+]

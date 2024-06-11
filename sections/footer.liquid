@@ -1,0 +1,186 @@
+<link rel="stylesheet" href="{{ 'footer.css' | asset_url }}">
+
+<div class="footer">
+    <div class="footer__container base-section-limit">
+        <div class="footer__top">
+            <div class="footer__title h1">{{ section.settings.title }}</div>
+            <p class="footer__subtitle">{{ section.settings.subtitle }}</p>
+            {% form 'contact', product %}
+                {% if form.posted_successfully? %}
+                    <p class="footer__form-text">{{ section.settings.form_message }}</p>
+                {% endif %}
+                <div class="footer__input-container">
+                    <input class="input" type="text" placeholder="{{ section.settings.input_placeholder }}" required> 
+                    <button class="footer__input-btn">{% render 'general-icons', icon: 'button-arrow-gray' %}</button>
+                </div>
+            {% endform %}
+            <div class="footer__socials">
+                {% for block in section.blocks %}
+                    {% if block.type == "social" %}
+                        <a target="_blank" class="footer__socials-social" href="{{ block.settings.url }}"> 
+                            <div class="footer__socials-icon">{{ block.settings.icon }}</div>
+                            <span>{{ block.settings.social_text }}</span>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+           
+        </div>
+        <div class="footer__bottom">
+            <nav class="bottom-footer__nav bottom-footer__nav--mobile">
+                <ul class="bottom-footer__nav-links">
+                    {% for link in section.settings.footer-menu.links %}
+                        <li class="bottom-footer__nav-item">
+                            {% if link.links != blank %}
+                                <input type="checkbox" class="bottom-footer__tab-input" id="{{ section.id }}-{{ forloop.index }}">
+                            {% endif %}
+                            <label class="bottom-footer__label" for="{{ section.id }}-{{ forloop.index }}">
+                                <a class="bottom-footer__nav-link">{{ link.title }}</a>
+                                {% if link.links != blank %}
+                                    <div class="tab-arrow">
+                                        {% render 'general-icons', icon: 'input-arrow' %}
+                                    </div>
+                                {% endif %}
+                            </label>
+                            {% if link.links != blank %}
+                                <ul class="bottom-footer__sublinks bottom-footer__tab-content">
+                                    {% for child_link in link.links %}
+                                        <li class="bottom-footer__subitem">
+                                            <a class="bottom-footer__sublink" href="{{ child_link.url }}">{{ child_link.title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            <nav class="bottom-footer__nav bottom-footer__nav--desktop">
+                <ul class="bottom-footer__nav-links bottom-footer__nav-links--desktop">
+                    {% for link in section.settings.footer-menu.links %}
+                        <li class="bottom-footer__nav-item">
+                            <a class="bottom-footer__nav-link">{{ link.title }}</a>
+                            {% if link.links != blank %}
+                                <ul class="bottom-footer__sublinks">
+                                    {% for child_link in link.links %}
+                                        <li class="bottom-footer__subitem">
+                                            <a class="bottom-footer__sublink" href="{{ child_link.url }}">{{ child_link.title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="footer__info">
+        <div class="footer__info-wrapper">
+            <div class="footer__info-text">
+                <p class="footer__info-description">{{ section.settings.footer_info_descr }}</p>
+                <p class="footer__info-made">{{ section.settings.footer_made_by }}<a href="https://opklopper.nl/" target="_blank">{% render 'general-icons', icon: 'opklopper-logo' %}</a></p>
+            </div>
+            <ul class="footer__payments">
+                {% for block in section.blocks %}
+                    {% if block.type == 'payment' %}
+                        <li class="footer__payments-item">
+                            {{ block.settings.icon }}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% schema %}
+{
+    "name": "Footer",
+    "tag": "footer",
+	"class": "footer",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Footer text"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle"
+        },
+        {
+            "type": "text",
+            "id": "input_placeholder",
+            "label": "Email placeholder"
+        },
+        {
+            "type": "text",
+            "id": "footer_info_descr",
+            "label": "All right text"
+        },
+        {
+            "type": "text",
+            "id": "footer_made_by",
+            "label": "Made by text"
+        },
+        {
+            "type": "text",
+            "id": "form_message",
+            "label": "Form posted successfully text"
+        },
+        {
+            "type": "header",
+            "content": "Menu"
+        },
+        {
+            "type": "link_list",
+            "id": "footer-menu",
+            "label": "Menu"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Social",
+            "type": "social",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "icon",
+                    "label": "Icon",
+                    "info": "Put an svg icon code here"
+                },
+                {
+                    "type": "text",
+                    "id": "social_text",
+                    "label": "Text"
+                },
+                {
+                    "type": "url",
+                    "id": "url",
+                    "label": "Social url"
+                }
+            ]
+        },
+        {
+            "name": "Payment",
+            "type": "payment",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "icon",
+                    "label": "Icon",
+                    "info": "Put an svg icon code here"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

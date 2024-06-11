@@ -1,0 +1,121 @@
+{{ 'section-promotion.css' | asset_url | stylesheet_tag }}
+
+<style>
+    {% if section.settings.color_content != blank %}
+        #shopify-section-{{ section.id }} .promotion__description {
+            background-color: {{ section.settings.color_content }};
+        }
+    {% else %}
+        #shopify-section-{{ section.id }} .promotion__description {
+            background-color: #F1F1E8;
+        }
+    {% endif %}
+
+</style>
+
+<div class="promotion__wrapper{% if section.blocks.size == 0 %} flexible{% endif %}">
+    <div class="promotion__main{% if section.blocks.size == 0 %} show{% else %} hide{% endif %}">
+        {% if section.settings.main_image != blank %}
+            <img
+                src="{{ section.settings.main_image | image_url }}"
+                alt=""
+                width="auto"
+                height="auto"
+                loading="lazy"
+                class="promotion__main-img"
+            >
+        {% endif %}
+    </div>
+    <div class="promotion__description{% if section.blocks.size == 0 %} large{% endif %}">
+        <div class="promotion__content">
+            <h3 class="promotion__description-title">{{ section.settings.title }}</h3>
+            <p class="promotion__description-description">{{ section.settings.description }}</p>
+            <a href="{{ section.settings.url }}" class="promotion__description-button">
+                <span class="promotion__description-caption">{{ section.settings.button }}</span>
+                <span class="promotion__description-arrow">{% render 'general-icons' icon: 'button-arrow' %}</span>
+            </a>
+        </div>
+    </div>
+    {% if section.blocks.size > 0 %}
+        <div class="promotion__images">
+            {% for block in section.blocks %}
+                {% if block.type == "gallery" and block.settings.image != blank %}
+                    <div class="promotion__images-wrapper">
+                        <img
+                            src="{{ block.settings.image | image_url }}"
+                            alt=""
+                            width="auto"
+                            height="auto"
+                            loading="lazy"
+                            class="promotion__images-img"
+                        >
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Section promotion",
+  "class": "promotion",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "BODY CARE, JUST SUPERB"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "We believe that just looking good is not enough. You have to look extraordinarily beautiful."
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main image"
+    },
+    {
+      "type": "color",
+      "id": "color_content",
+      "label": "Background color for content",
+      "default": "#F1F1E8"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Caption for button",
+      "default": "See products"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Button url"
+    }
+  ],
+  "blocks": [
+  {
+    "type": "gallery",
+    "name": "Gallery",
+    "limit": 2,
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Gallery image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Section promotion",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

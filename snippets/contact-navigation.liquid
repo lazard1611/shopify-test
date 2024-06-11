@@ -1,0 +1,9 @@
+<nav class="contact-navigation">
+	{% for link in section.settings.contact_menu.links %}
+		<a href="{{ link.url }}" class="contact-navigation__link{% if link.active == true %} active{% endif %}" data-contact-navigation>
+            <span class="contact-navigation__title title">
+                <span>{{ link.title }}</span>
+            </span>
+		</a>
+	{% endfor %}
+</nav>

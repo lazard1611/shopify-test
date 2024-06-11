@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="{{ 'template-collection-hero.css' | asset_url }}">
+
+<div class="collection-hero__inner{% if collection.metafields.custom.hero_image %} collection-hero__inner--with-image{% endif %}">
+    {% render 'breadcrumbs' %}
+    <div class="collection-hero__container{% if collection.metafields.custom.hero_image %} collection-hero__container--with-image{% endif %}">
+        <div class="collection-hero__content">
+            <h1 class="h1">{{ collection.title }}</h1>
+            {% if collection.description  %}
+                <p class="collection-hero__text">{{ collection.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% if collection.metafields.custom.hero_image %}
+    <div class="collection-hero__image-container">
+        <img
+            src="{{ collection.metafields.custom.hero_image | image_url }}"
+            alt="{{ collection.title }}"
+            width="auto"
+            height="auto"
+            loading="lazy"
+            class="collection-hero__image"
+        >
+    </div>
+{% endif %}
+
+{% schema %}
+    {
+        "name": "Collection hero",
+        "tag": "section",
+        "class": "collection-hero",
+        "settings": []
+    }
+{% endschema %}

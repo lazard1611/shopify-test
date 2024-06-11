@@ -1,0 +1,94 @@
+{% comment %} <link rel="stylesheet" href="{{ 'example.css' | asset_url }}"> {% endcomment %}
+
+<style>
+    #shopify-section-{{ section.id }} .example {
+        padding-top: {{ section.settings.padding-top }}px;
+        padding-bottom: {{ section.settings.padding-bottom }}px;
+    }
+</style>
+
+{% comment %} {% render 'breadcrumbs' %} {% endcomment %}
+
+<div class="example__container">works
+    <h2 class="example__title">{{ section.settings.title }}</h2>
+    <div class="example__description">{{ section.settings.text }}</div>
+    {% for block in section.blocks %}
+        {% if block.type == 'block' %}
+            <div class="example-block">
+
+            </div>
+        {% endif %}
+        {% if block.type == "@app" %}
+            {% render block %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% comment %} <script type="module" src="{{ 'example.js' | asset_url }}"></script> {% endcomment %}
+
+{% schema %}
+{
+    "name": "Section",
+    "tag": "section",
+    "class": "example",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "textarea",
+            "id": "text",
+            "label": "Description",
+            "info": "Use <br> to break a line"
+        },
+        {
+            "type": "range",
+            "id": "padding-top",
+            "min": 0,
+            "max": 200,
+            "step": 5,
+            "unit": "px",
+            "label": "padding top",
+            "default": 45
+        },
+        {
+            "type": "range",
+            "id": "padding-bottom",
+            "min": 0,
+            "max": 200,
+            "step": 5,
+            "unit": "px",
+            "label": "padding bottom",
+            "default": 45
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Item",
+            "type": "block",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "item-logo",
+                    "label": "Partner logo"
+                },
+                {
+                    "type": "url",
+                    "id": "item-url",
+                    "label": "Partner link"
+                }
+            ]
+        },
+        {
+            "type": "@app"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Section"
+        }
+    ]
+}
+{% endschema %}
