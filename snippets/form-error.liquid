@@ -1,9 +1,0 @@
-{% for error in form.errors %}
-	<div class="form-error">
-		{% if error == 'form' %}
-			<div class="form-error__item">{{ form.errors.messages[error] }}</div>
-		{% else %}
-			<div class="form-error__item">{{ form.errors.translated_fields[error] }} {{ form.errors.messages[error] }}</div>
-		{% endif %}
-	</div>
-{% endfor %}

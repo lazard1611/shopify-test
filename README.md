@@ -1,11 +1,11 @@
 ## How to install project
-``` git clone https://github.com/opklopper-team/chickslovefood.git . ```  
+``` git clone https://github.com/lazard1611/shopify-test.git ```  
 ``` git checkout -b branchName ```  
 ``` npm install ``` or ``` npm i ```
 
 ## Project terminal commands
 Use shopify the dev command to run shopify dev server (without live reload)  
-``` shopify theme dev --live-reload=off -s chickslovefood.myshopify.com ```  
+``` shopify theme dev --live-reload=off -s opklopperteststore1.myshopify.com ```  
 
 Start gulp and webpack watcher (for building sass files to css and js files to minimized version):  
 To build all css and js files use this command:  
@@ -18,7 +18,7 @@ To pull all changes that was made in customizer use shopify command:
 ## How we run the project for develop
 We use 3 console windows (for shopify cli, npm watcher and github merges).  
 These two commands is enought for comfortable work:  
-1) ``` shopify theme dev --live-reload=off -s chickslovefood.myshopify.com ```
+1) ``` shopify theme dev --live-reload=off -s opklo.myshopify.com ```
 2) ``` npm run watch ```
 
 ## What is new in structure?
