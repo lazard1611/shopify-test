@@ -1,8 +1,8 @@
 /* ==================================================== IMPORTS ==================================================== */
 //application
 @import './variables.scss';
-@import './normalize.scss';
-@import './fonts.scss';
+//@import './normalize.scss';
+//@import './fonts.scss';
 //modules
 // @import '../../node_modules/swiper/swiper-bundle.css';
 /* ===================================================== COMMON ==================================================== */
@@ -43,10 +43,17 @@ body {
 
 //     &::-webkit-scrollbar-thumb {
 //         border-radius: 10px;
-//         background-color: $green-color;    
+//         background-color: $green-color;
 //     }
 
 //     &::-webkit-scrollbar-track {
 //         background-color: $lighten_yellow-color;
 //     }
 // }
+
+.spinner {
+	width: 32px;
+	height: 32px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' style='margin: auto; display: block;' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid'%3E%3Ccircle cx='50' cy='50' r='30' stroke='%23f9b55c' stroke-width='10' fill='none'%3E%3C/circle%3E%3Ccircle cx='50' cy='50' r='30' stroke='%23e4de2f' stroke-width='8' stroke-linecap='round' fill='none'%3E%3CanimateTransform attributeName='transform' type='rotate' repeatCount='indefinite' dur='2.8571428571428568s' values='0 50 50;180 50 50;720 50 50' keyTimes='0;0.5;1'%3E%3C/animateTransform%3E%3Canimate attributeName='stroke-dasharray' repeatCount='indefinite' dur='2.8571428571428568s' values='18.84955592153876 169.64600329384882;94.2477796076938 94.24777960769377;18.84955592153876 169.64600329384882' keyTimes='0;0.5;1'%3E%3C/animate%3E%3C/circle%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+}

@@ -101,7 +101,7 @@
 	height: 44px;
 
 	transition: background-color 0.3s ease,
-							color 0.3s ease;	
+							color 0.3s ease;
 	background-color: #fff;
 	color: #000;
 
@@ -115,6 +115,11 @@
 	&:hover {
 		background-color: #ececee;
 		color: #fff;
+	}
+
+	&:disabled {
+		pointer-events: none;
+		background-color: tomato;
 	}
 }
 
@@ -134,7 +139,7 @@
 	line-height: 44px;
 	text-align: center;
 	background-color: #fff;
-	border: 1px solid #ececee;	
+	border: 1px solid #ececee;
     margin: 0 16px;
-	
+
 }
